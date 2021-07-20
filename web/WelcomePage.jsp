@@ -4,8 +4,15 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:if test="${empty LOGIN_ERROR}">
+    <script>
+        window.onload = function () {
+            var button = document.getElementById("sign-in");
+            button.click();
+        };
+    </script>
+</c:if>
 <!-- Start Slider Area -->
-
 <div class="slider-area">
     <div class="container-fluid p-0">
         <div class="row no-gutters">
@@ -75,7 +82,7 @@
                     </div>
                 </div>
             </c:forEach>
-        
+
         </div>
     </div>
 </div>

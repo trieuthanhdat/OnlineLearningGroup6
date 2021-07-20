@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 
+import DTO.User.UserDTO;
 import Temp.UserProfileDAO;
 import DTO.User.UserProfileDTO;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -24,7 +26,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ViewUserProfileServlet", urlPatterns = {"/ViewUserProfileServlet"})
 public class ViewUserProfileServlet extends HttpServlet {
-private final String USER_PROFILE = "viewuserprofile.jsp";
+
+    private final String USER_PROFILE = "ProfilePage.jsp";
+    private final String WELCOME_PAGE = "WelcomePage.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,18 +44,25 @@ private final String USER_PROFILE = "viewuserprofile.jsp";
         response.setContentType("text/html;charset=UTF-8");
         String url = USER_PROFILE;
         try {
-            String email = request.getParameter("email");
-            UserProfileDAO dao = new UserProfileDAO();
-            UserProfileDTO userList = dao.getUserProfileByEmail(email);
-           
-            if(userList != null){
-                request.setAttribute("userprofilelist", userList);
-            }   
-        }catch(SQLException ex){
-            log("Check ViewUserProfileServlet SQL Exception - "+ex);
-        }catch(NamingException ex){
-            log("Check ViewUserProfileServlet Naming Exception - "+ex);
-        }finally{
+            HttpSession session = request.getSession(false);
+            UserDTO currUser = (UserDTO) session.getAttribute("CURRENT_USER");
+            if (currUser != null) {
+
+                String email = currUser.getEmail();
+                UserProfileDAO dao = new UserProfileDAO();
+                UserProfileDTO user = dao.getUserProfileByEmail(email);
+
+                if (user != null) {
+                    request.setAttribute("userprofilelist", user);
+                }
+            } else {
+                url = WELCOME_PAGE;
+            }
+        } catch (SQLException ex) {
+            log("Check ViewUserProfileServlet SQL Exception - " + ex);
+        } catch (NamingException ex) {
+            log("Check ViewUserProfileServlet Naming Exception - " + ex);
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

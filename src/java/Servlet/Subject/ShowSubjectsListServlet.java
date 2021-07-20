@@ -12,6 +12,7 @@ import DTO.Subject.SubjectDTO;
 import DTO.User.UserDTO;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -30,7 +31,7 @@ import javax.servlet.http.HttpSession;
 public class ShowSubjectsListServlet extends HttpServlet {
 
     private final String ERROR_PAGE = "error.html";
-    private final String RESULT_PAGE = "SubjectsList.jsp";
+    private final String RESULT_PAGE = "DashboardSubjectTable.jsp";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -61,8 +62,20 @@ public class ShowSubjectsListServlet extends HttpServlet {
                 
                     SubjectCategoryDAO subCatDAO = new SubjectCategoryDAO();
                     List<SubjectCategoryDTO> subCategoryList = subCatDAO.getSubjectsCategoryList();
+                    
+                    List<SubjectDTO> enabledList = new ArrayList<>();
+                    List<SubjectDTO> disabledList = new ArrayList<>();
+                    
+                    for (SubjectDTO sub : subjectList) {
+                        if (sub.isStatus()) {
+                            enabledList.add(sub);
+                        } else {
+                            disabledList.add(sub);
+                        }
+                    }
                 
-                    request.setAttribute("SUBJECTS_LIST", subjectList);
+                    request.setAttribute("ENABLED_SUBJECTS_LIST", enabledList);
+                    request.setAttribute("DISABLED_SUBJECTS_LIST", disabledList);
                     request.setAttribute("SUBJECTS_CATEGORY_LIST", subCategoryList);
                 
                     url = RESULT_PAGE;

@@ -5,8 +5,6 @@ package Temp;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import DTO.User.UserProfileDTO;
 import utils.DBHelpers;
 import java.io.Serializable;
@@ -91,6 +89,68 @@ public class UserProfileDAO implements Serializable {
             stm.setString(3, phone);
             stm.setString(4, address);
             stm.setString(5, email);
+
+            int rowAffect = stm.executeUpdate();
+            if (rowAffect > 0) {
+                return true;
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateUserAvatar(String email, String avatar) throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBHelpers.makeConnection();
+            String sql = "UPDATE UserProfile "
+                    + "SET Avatar = ? "
+                    + "Where Email = ? ";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, avatar);
+            stm.setString(2, email);
+
+            int rowAffect = stm.executeUpdate();
+            if (rowAffect > 0) {
+                return true;
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+
+    public boolean updateUserProfile(
+            String email,
+            String gender,
+            String phone,
+            String address
+    ) throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBHelpers.makeConnection();
+            String sql = "UPDATE UserProfile "
+                    + "SET   Gender = ? , Mobile = ? , Address = ? "
+                    + "Where Email = ? ";
+            stm = con.prepareStatement(sql);
+
+            stm.setString(1, gender);
+            stm.setString(2, phone);
+            stm.setString(3, address);
+            stm.setString(4, email);
 
             int rowAffect = stm.executeUpdate();
             if (rowAffect > 0) {

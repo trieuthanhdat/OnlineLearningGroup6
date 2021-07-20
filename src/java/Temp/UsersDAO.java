@@ -123,7 +123,85 @@ public class UsersDAO implements Serializable {
         }
         return false;
     }
+    public boolean updateUserName(String email, String name) throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        try{
+            con = DBHelpers.makeConnection();
+            String sql = "UPDATE Users "
+                    + "SET Fullname = ? "
+                    + "Where Email = ? ";
+            stm= con.prepareStatement(sql);
+            stm.setString(1, name);
+            stm.setString(2, email);
+            
+            int rowAffect = stm.executeUpdate();
+            if(rowAffect>0){
+                return true;
+            }
+        }finally{
+            if(stm!=null){
+                stm.close();
+            }if(con!=null){
+                con.close();
+            }
+        }
+        return false;
+    }
+    public boolean checkExistPasswordByEmail(String email, String password) throws NamingException, SQLException{
+        Connection con =null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+         try{
+           con = DBHelpers.makeConnection();
+           if(con!=null){
+               String sql = "Select Password "
+                       + "From Users "
+                       + "Where Email = ? And Password = ? ";
+                stm = con.prepareStatement(sql);
+                stm.setString(1, email);
+                stm.setString(2, password);
+                rs = stm.executeQuery();
+                if(rs.next()){
+                    return true;
+                }
+           }
+        }finally{
+            if(rs!=null){
+                rs.close();
+            }if(stm!=null){
+                stm.close();
+            }if(con!=null){
+                con.close();
+            }
+        }
+        return false;
+    }
 
+    public boolean updatePassword(String password, String email) throws NamingException, SQLException{
+        Connection con = null;
+        PreparedStatement stm = null;
+        try{
+            con = DBHelpers.makeConnection();
+            String sql = "UPDATE Users "
+                    + "SET Password = ? "
+                    + "Where Email = ? ";
+            stm= con.prepareStatement(sql);
+            stm.setString(1, password);
+            stm.setString(2, email);
+            int rowAffect = stm.executeUpdate();
+            if(rowAffect>0){
+                return true;
+            }
+        }finally{
+            if(stm!=null){
+                stm.close();
+            }if(con!=null){
+                con.close();
+            }
+        }
+        return false;
+    }
     public boolean checkExistUserEmail(String email) throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;

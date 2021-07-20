@@ -1,4 +1,3 @@
-
 <aside
     class="
     sidenav
@@ -10,7 +9,6 @@
     "
     id="sidenav-main"
     style="background-color: #ff6f61;border-radius: 10px ">
-    >
     <div class="sidenav-header">
         <i
             class="
@@ -36,7 +34,7 @@
     <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="Dashboard">
+                <a class="nav-link active" href="Dashboard">
                     <div
                         class="
                         icon icon-shape icon-sm
@@ -101,7 +99,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="UserTable">
+                <a class="nav-link" href="UserTable">
                     <div
                         class="
                         icon icon-shape icon-sm
@@ -231,7 +229,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="billing.html">
+                <a class="nav-link" href="../pages/billing.html">
                     <div
                         class="
                         icon icon-shape icon-sm
@@ -296,7 +294,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="rtl.html">
+                <a class="nav-link" href="../pages/rtl.html">
                     <div
                         class="
                         icon icon-shape icon-sm
@@ -380,7 +378,7 @@
                 </h6>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="profile.html">
+                <a class="nav-link" href="../pages/profile.html">
                     <div
                         class="
                         icon icon-shape icon-sm
@@ -450,7 +448,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="sign-in.html">
+                <a class="nav-link" href="../pages/sign-in.html">
                     <div
                         class="
                         icon icon-shape icon-sm
@@ -515,7 +513,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="sign-up.html">
+                <a class="nav-link" href="../pages/sign-up.html">
                     <div
                         class="
                         icon icon-shape icon-sm
@@ -641,4 +639,3 @@
         </div>
     </div>
 </aside>
-<!-- Navbar -->

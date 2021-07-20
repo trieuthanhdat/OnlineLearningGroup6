@@ -47,7 +47,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Full Name</label>
-                                    <input type="text" class="form-control" value="${CURRENT_USER.fullName}">
+                                    <input type="text" name="txtName" class="form-control" value="${CURRENT_USER.fullName}">
                                 </div>
                             </div>
 
@@ -60,7 +60,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Phone number</label>
-                                    <input type="text" class="form-control" value="${CURRENT_PROFILE.phone}">
+                                    <input type="text" name="txtPhone"  class="form-control" value="${CURRENT_PROFILE.phone}">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -76,15 +76,15 @@
                                         <c:set var="checkOther" value="checked"></c:set>
                                     </c:if>
                                     <div class="form-check">
-                                        <input class="form-check-input" ${checkMale} type="radio" name="gender" id="radioMale">
+                                        <input class="form-check-input" ${checkMale} type="radio" value="Male" name="Gender" id="radioMale">
                                         <label class="form-check-label" for="radioMale">
                                             Male
                                         </label><br>
-                                        <input class="form-check-input" ${checkFemale} type="radio" name="gender" id="radioFemale">
+                                        <input class="form-check-input" ${checkFemale} type="radio" value="Female" name="Gender" id="radioFemale">
                                         <label class="form-check-label" for="radioFemale">
                                             Female
                                         </label><br>
-                                        <input class="form-check-input" ${checkOther} type="radio" name="gender" id="radioOther">
+                                        <input class="form-check-input" ${checkOther} type="radio" value="Other" name="Gender" id="radioOther">
                                         <label class="form-check-label" for="radioOther">
                                             Other
                                         </label><br>
@@ -94,7 +94,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Address</label>
-                                    <input type="text" class="form-control" value="${CURRENT_PROFILE.address}">
+                                    <input type="text" class="form-control" name="txtAddress" value="${CURRENT_PROFILE.address}">
                                 </div>
                             </div>
                             <div class="col-md-12">
@@ -105,39 +105,41 @@
                             </div>
                         </div>
                         <div>
-                            <button class="btn btn-primary">Update</button>
-                            <button class="btn btn-light">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button  class="btn btn-light">Cancel</button>
                         </div>
                     </form>     
                 </div>
                 <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
                     <h3 class="mb-4">Password Settings</h3>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Old password</label>
-                                <input type="password" class="form-control">
+                    <form action="UpdateUserProfile" method="post">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Old password</label>
+                                    <input type="password" name="txtOldPassword" class="form-control">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>New password</label>
-                                <input type="password" class="form-control">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>New password</label>
+                                    <input type="password" name="txtNewPassword" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Confirm new password</label>
+                                    <input type="password" name="txtConfirmPassword" class="form-control">
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Confirm new password</label>
-                                <input type="password" class="form-control">
-                            </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button class="btn btn-light">Cancel</button>
                         </div>
-                    </div>
-                    <div>
-                        <button class="btn btn-primary">Update</button>
-                        <button class="btn btn-light">Cancel</button>
-                    </div>
+                    </form>
                 </div>
                 <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
                     <h3 class="mb-4">Security Settings</h3>
@@ -172,28 +174,32 @@
                 </div>
                 <!-- user avatar -->
                 <div class="tab-pane fade" id="application" role="tabpanel" aria-labelledby="application-tab">
-
-                    <div class="user-profilesinglepage" id="avatar-header">
-                        <div class="avatar-header">
-                            <div class="avatar-wrapper">
-                                <img class="profile-pic" src=""/>
-                                <div class="upload-button">
-                                    <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                    <form action="UpdateUserProfile" method="post">
+                        <div class="user-profilesinglepage" id="avatar-header">
+                            <div class="avatar-header">
+                                <div class="avatar-wrapper">
+                                    <img class="profile-pic" src=""/>
+                                    <div class="upload-button">
+                                        <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
+                                    </div>
+                                    <input class="file-upload"  name="picture" type="file" accept="*"/>
                                 </div>
-                                <input class="file-upload" type="file" accept="image/*"/>
-                            </div>
-                            <div class="nametitle text-center">
-                                <h3>Raja Chohan</h3>
-                                <h5>Full Stack Developer</h5>
+                                <div class="nametitle text-center">
+                                    <h3>Raja Chohan</h3>
+                                    <h5>Full Stack Developer</h5>
 
+                                </div>
                             </div>
+
                         </div>
-
-                    </div>
-                    <div class="socialtitle text-center">
-                        <input type="text" value="To upload your avatar: click the icon above" class="form-control" name="guide" id="" disabled>                         
-                    </div>
-
+                        <div class="socialtitle text-center">
+                            <input type="text" value="To upload your avatar: click the icon above" class="form-control" name="guide" id="" disabled>                         
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button class="btn btn-light">Cancel</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="tab-pane fade" id="notification" role="tabpanel" aria-labelledby="notification-tab">
                     <h3 class="mb-4">Notification Settings</h3>

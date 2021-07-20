@@ -21,3 +21,4 @@ Dashboard=Dashboard.jsp
 UserTable=ViewUserServlet
 UpdateUser=UpdateUserServlet
 UpdateUserProfile=UpdateUserProfileServlet
+SubjectTable=ShowSubjectsListServlet

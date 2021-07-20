@@ -5,8 +5,9 @@
  */
 package Servlet.User;
 
-
+import DTO.User.UserDTO;
 import Temp.UserProfileDAO;
+import Temp.UsersDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.naming.NamingException;
@@ -17,7 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 /**
  *
@@ -25,12 +27,16 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UpdateUserProfileServlet", urlPatterns = {"/UpdateUserProfileServlet"})
 @MultipartConfig(
-  fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-  maxFileSize = 1024 * 1024 * 10,      // 10 MB
-  maxRequestSize = 1024 * 1024 * 100   // 100 MB
+        fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+        maxFileSize = 1024 * 1024 * 10, // 10 MB
+        maxRequestSize = 1024 * 1024 * 100 // 100 MB
 )
 public class UpdateUserProfileServlet extends HttpServlet {
-private final String UPDATE_USER_PROFILE="updateUserProfile.jsp";
+
+    private final String UPDATE_USER_PROFILE = "ProfilePage.jsp";
+    private final String ERROR_PAGE = "error.jsp";
+    private final String WELCOME_PAGE = "WelcomePage.jsp";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,28 +49,80 @@ private final String UPDATE_USER_PROFILE="updateUserProfile.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = UPDATE_USER_PROFILE;
-        
-        
-        String avatar = request.getParameter("txtAvatar");
-        String gender = request.getParameter("txtGender");
+        String url = ERROR_PAGE;
+        String name = request.getParameter("txtName");
+        String gender = request.getParameter("Gender");
         String phone = request.getParameter("txtPhone");
         String address = request.getParameter("txtAddress");
-        String email = request.getParameter("txtEmail"); 
-        try  {     
-            UserProfileDAO dao = new UserProfileDAO();
-            boolean result = dao.updateUserProfile(email,avatar, gender, phone, address);
-            if(result){
-               url = UPDATE_USER_PROFILE;
-           }
-        }catch(SQLException ex){
-            log("Check UpdateUserProfileServlet SQL Exception - "+ex);
-        }catch(NamingException ex){
-            log("Check UpdateUserProfileServlet NamingException - "+ex);
-        }
-        finally{
-            RequestDispatcher rd=request.getRequestDispatcher(url);
-            rd.forward(request, response); 
+        String avatar = request.getParameter("picture");
+        String oldPass = request.getParameter("txtOldPassword");
+        String newPass = request.getParameter("txtNewPassword");
+        String confirmPass = request.getParameter("txtConfirmPassword");
+        //update name
+        //update gender phone address
+//        log("\nName: " + name);
+//        log("Gender: " + gender);
+//        log("Phone: " + phone);
+//        log("Address: " + address);
+//        log("Avatar: " + avatar);
+//        log("OldPass: " + oldPass);
+//        log("New Pass: " + newPass);
+//        log("Confirm: " + confirmPass);
+        try {
+            HttpSession session = request.getSession(false);
+            UserDTO currUser = (UserDTO) session.getAttribute("CURRENT_USER");
+            if (currUser != null) {
+                String email = currUser.getEmail();
+                UserProfileDAO updao = new UserProfileDAO();
+                UsersDAO udao = new UsersDAO();
+                if (avatar != null) {
+                    //update avatar
+                    String values[] = avatar.split("/");
+                    avatar = values[values.length-1];
+//                    log("Avatar: " + avatar);
+                    boolean resultEmail = updao.updateUserAvatar(email, avatar);
+                    if (resultEmail) {
+                        url = UPDATE_USER_PROFILE;
+                    }
+                }
+                if (name != null) {
+                    boolean resultName = udao.updateUserName(email, name);
+                    log(resultName + " ");
+                    if (resultName) {
+                        session.setAttribute("fullname", name);
+                        url = UPDATE_USER_PROFILE;
+                    }
+                }
+                if (gender != null) {
+                    //phone va address dc null
+                    boolean resultProfile = updao.updateUserProfile(email, gender, phone, address);
+                    if (resultProfile) {
+                        url = UPDATE_USER_PROFILE;
+                    }
+                }
+                if (oldPass != null && newPass != null && confirmPass != null) {
+                    //check if old pass is exist
+                    boolean exist = udao.checkExistPasswordByEmail(email, oldPass);
+                    if (exist && newPass.equals(confirmPass)) {
+                        boolean result = udao.updatePassword(newPass, email);
+                        if (result) {
+                            url = UPDATE_USER_PROFILE;
+                        }
+                    }
+                }
+                session.setAttribute("CURRENT_USER", udao.getCurrUserByID(currUser.getUserID()));
+                session.setAttribute("CURRENT_PROFILE", updao.getUserProfileByEmail(email));
+            } else {
+                url = WELCOME_PAGE;
+            }
+        } catch (SQLException ex) {
+            log("Check UpdateUserProfileServlet SQL Exception - " + ex);
+        } catch (NamingException ex) {
+            log("Check UpdateUserProfileServlet NamingException - " + ex);
+        } finally {
+            log(url);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 
