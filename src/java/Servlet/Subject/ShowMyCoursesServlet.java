@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
 public class ShowMyCoursesServlet extends HttpServlet {
     
     private final String ERROR_PAGE = "error.html";
-    private final String MY_COURSES_PAGE = "MyCourses.jsp";
+    private final String MY_COURSES_PAGE = "MyCourse.jsp";
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,9 +53,9 @@ public class ShowMyCoursesServlet extends HttpServlet {
             if (session != null) {
                 UserDTO currUser = (UserDTO)session.getAttribute("CURRENT_USER");
                 if (currUser != null) {
-                    String userID = currUser.getUserID();
+                    
                     RegistrationDAO regDAO = new RegistrationDAO();
-                    List<RegistrationDTO> regList = regDAO.getUserRegistrations(userID);
+                    List<RegistrationDTO> regList = regDAO.getUserRegistrations(currUser.getEmail());
                     List<Integer> subIDList = new ArrayList<>();
                     
                     for (RegistrationDTO regItem : regList) {
@@ -78,6 +78,7 @@ public class ShowMyCoursesServlet extends HttpServlet {
                     }
 
                     request.setAttribute("MY_COURSES", myCourses);
+                    log(myCourses.toString());
                     url = MY_COURSES_PAGE;
                 }
             }

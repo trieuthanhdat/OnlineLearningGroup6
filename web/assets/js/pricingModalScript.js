@@ -1,6 +1,5 @@
 const enrollModal = document.getElementById("pricing");
 const enrollBtn = document.getElementById("enrollBtn");
-const closeBtn = document.getElementById("popup-close-button");
 
 const overlay = document.getElementById("overlay");
   
@@ -21,4 +20,3 @@ function closeModal(){
 
 enrollBtn.addEventListener("click", showModal);
 overlay.addEventListener("click", closeModal);
-closeBtn.addEventListener("click", closeModal);

@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UpdateUserServlet", urlPatterns = {"/UpdateUserServlet"})
 public class UpdateUserServlet extends HttpServlet {
-private final String USER_LIST="user.jsp";
+private final String USER_LIST ="UserTable";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,35 +38,32 @@ private final String USER_LIST="user.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String url = USER_LIST;
         String role = request.getParameter("selectRole");
         String selectStatus = request.getParameter("selectStatus");
-        String email = request.getParameter("email");
-        String url = USER_LIST;
+        String id = request.getParameter("userID");
+        
         boolean status = false;
-        if(selectStatus.equals("true")){
+        if(selectStatus.toLowerCase().equals("true")){
             status= true;
         }
-//        try { 
-//            UserDAO dao = new UserDAO();
-//            boolean result = dao.updateUser(email, role, status);
-//            if(result){
-//                //update xong thì load lại page vua cap nhat, thieu cai nay thì empty list null => no result match
-//                UserDAO userdao = new UserDAO();
-//                userdao.getAllUsers();
-//                List<UserDTO> userList = userdao.getUserList();
-//                request.setAttribute("userlist", userList);
-//                url = USER_LIST;
-//            }
-//        }catch(SQLException ex){
-//            log("Check UpdateUserServlet SQL Exception - "+ex);
-//        }catch(NamingException ex){
-//            log("Check UpdateUserServlet NamingException - "+ex);
-//        }
-//        finally{
-//            RequestDispatcher rd=request.getRequestDispatcher(url);
-//            rd.forward(request, response); 
-//        }
+        
+        try { 
+            UsersDAO dao = new UsersDAO();
+            boolean result = dao.updateUser(id, role, status);
+            if(result){
+                url = USER_LIST;
+            }
+        }catch(SQLException ex){
+            log("Check UpdateUserServlet SQL Exception - "+ex);
+        }catch(NamingException ex){
+            log("Check UpdateUserServlet NamingException - "+ex);
+        }
+        finally{
+            response.sendRedirect(url);
+        }
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

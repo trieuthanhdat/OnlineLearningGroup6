@@ -41,7 +41,7 @@ private final String USER_PROFILE = "viewuserprofile.jsp";
         try {
             String email = request.getParameter("email");
             UserProfileDAO dao = new UserProfileDAO();
-            UserProfileDTO userList = dao.getUserEmail(email);
+            UserProfileDTO userList = dao.getUserProfileByEmail(email);
            
             if(userList != null){
                 request.setAttribute("userprofilelist", userList);

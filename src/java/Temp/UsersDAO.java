@@ -5,15 +5,11 @@ package Temp;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import DTO.User.UserDTO;
 import java.io.Serializable;
 import java.sql.Connection;
@@ -94,6 +90,38 @@ public class UsersDAO implements Serializable {
             }
         }
         return email;
+    }
+
+    public boolean updateUser(
+            String userID,
+            String role,
+            boolean status
+    ) throws NamingException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            con = DBHelpers.makeConnection();
+            String sql = "UPDATE Users "
+                    + "SET Role = ? , Status = ? "
+                    + "Where UserID = ? ";
+            stm = con.prepareStatement(sql);
+            stm.setString(1, role);
+            stm.setBoolean(2, status);
+            stm.setString(3, userID);
+
+            int rowAffect = stm.executeUpdate();
+            if (rowAffect > 0) {
+                return true;
+            }
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
     }
 
     public boolean checkExistUserEmail(String email) throws SQLException, NamingException {
@@ -372,4 +400,3 @@ public class UsersDAO implements Serializable {
         }
     }
 }
-

@@ -7,6 +7,8 @@ package Servlet.Admin;
 
 import Temp.UsersDAO;
 import DTO.User.UserDTO;
+import DTO.User.UserProfileDTO;
+import Temp.UserProfileDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ViewUserServlet", urlPatterns = {"/ViewUserServlet"})
 public class ViewUserServlet extends HttpServlet {
 
-    private final String USER_PAGE = "user.jsp";
+    private final String USER_PAGE = "DashboardUserTable.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,7 +47,13 @@ public class ViewUserServlet extends HttpServlet {
             UsersDAO userdao = new UsersDAO();
             userdao.getAllUsers();
             List<UserDTO> userList = userdao.getUserList();
-            request.setAttribute("userlist", userList);
+            request.setAttribute("USER_LIST", userList);
+            UserProfileDAO prDAO = new UserProfileDAO();
+            prDAO.getUserProfile();
+            List<UserProfileDTO> profileList = prDAO.getUserProfileList();
+            log(profileList.toString());
+            request.setAttribute("USERPROFILE_LIST", profileList);
+            
         } catch (SQLException ex) {
             log("Check ViewUserServlet SQL Exception - " + ex);
         } catch (NamingException ex) {

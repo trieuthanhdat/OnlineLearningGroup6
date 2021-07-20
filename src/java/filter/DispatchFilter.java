@@ -107,11 +107,11 @@ public class DispatchFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         String uri = req.getRequestURI();
         String url = null;
-        //log("URI: " + uri);
+        log("URI: " + uri);
         
         try {
             //file trong thư mục lib, assets không cần đi qua filter
-            if (uri.contains("/lib") || uri.contains("/assets")) {
+            if (uri.contains("/lib") || uri.contains("/assets")||uri.contains("/DashboardAssets")) {
                 chain.doFilter(request,response);
                 return;
             }   

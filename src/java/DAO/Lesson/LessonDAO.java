@@ -125,50 +125,26 @@ public class LessonDAO implements Serializable {
         return currLessonList;
     }
 
-    public LessonDTO getCurrLessonDetails(int subjectID, int topicOrder, int lessonOrder)
+   public LessonDTO getCurrLessonDetails(int lessonID)
             throws NamingException, SQLException {
 
         LessonDTO currLesson = null;
         try {
-            List<LessonDTO> lessons = getLessonsBySubjectID(subjectID);
-            int currTopicID = 0;
-            // remove disabled lesson and get topicID of current lesson.
-            for (LessonDTO lesson : lessons) {
-                if (!lesson.isStatus()) {
-                    lessons.remove(lesson);
-                } else if (lesson.getTopicID() == 0 && lesson.getOrder() == topicOrder) {
-                    currTopicID = lesson.getLessonID();
-                    break;
-                }
-            }
-            // after traversing through the list and don't find topic return null
-            if (currTopicID == 0) {
-                return currLesson;
-            }
-            // check for the right topicID and order.
-            for (LessonDTO lesson : lessons) {
-                if (lesson.getTopicID() == currTopicID && lesson.getOrder() == lessonOrder) {
-                    currLesson = lesson;
-                    break;
-                }
-            }
-
             con = DBHelpers.makeConnection();
             if (con != null) {
-                String sql = "SELECT QuizID, VideoLink, HtmlContent "
-                        + "FROM LessonDetails "
-                        + "WHERE LessonID = ?";
-
+                String sql = "SELECT LessonID, QuizID, VideoLink, HtmlContent "
+                           + "FROM LessonDetails "
+                           + "WHERE LessonID = ?";
                 stm = con.prepareStatement(sql);
-                stm.setInt(1, currLesson.getLessonID());
-
+                stm.setInt(1, lessonID);
                 rs = stm.executeQuery();
                 if (rs.next()) {
                     int quizID = rs.getInt("QuizID");
                     String videoLink = rs.getString("VideoLink");
                     String htmlContent = rs.getString("HtmlContent");
-
-                    LessonDetailsDTO details = new LessonDetailsDTO(quizID, videoLink, htmlContent);
+                    
+                    currLesson = getLessonByID(lessonID);
+                    LessonDetailsDTO details = new LessonDetailsDTO(quizID, videoLink, htmlContent);                    
                     currLesson.setDetails(details);
                 }
             }
@@ -177,6 +153,7 @@ public class LessonDAO implements Serializable {
         }
         return currLesson;
     }
+
 
     public LessonDTO getLessonByID(int lessonID) {
         LessonDTO searchLesson = null;

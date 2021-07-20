@@ -6,80 +6,52 @@
 
 <div id="overlay"></div>
 <!-- ======= Pricing Section ======= -->
-<div class="pricing">
-    <div class="container" id="pricing" data-aos="fade-up">
-        <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="box">
-                    <h3>Free</h3>
-                    <h4><sup>$</sup>0<span> / month</span></h4>
-                    <ul>
-                        <li>Aida dere</li>
-                        <li>Nec feugiat nisl</li>
-                        <li>Nulla at volutpat dola</li>
-                        <li class="na">Pharetra massa</li>
-                        <li class="na">Massa ultricies mi</li>
-                    </ul>
-                    <div class="btn-wrap">
-                        <a href="#" class="btn-buy">Buy Now</a>
-                    </div>
-                </div>
-            </div>
+<c:if test="${OWNCOURSE eq false}">
 
-            <div class="col-lg-3 col-md-6 mt-4 mt-md-0">
-                <div class="box featured">
-                    <h3>Business</h3>
-                    <h4><sup>$</sup>19<span> / month</span></h4>
-                    <ul>
-                        <li>Aida dere</li>
-                        <li>Nec feugiat nisl</li>
-                        <li>Nulla at volutpat dola</li>
-                        <li>Pharetra massa</li>
-                        <li class="na">Massa ultricies mi</li>
-                    </ul>
-                    <div class="btn-wrap">
-                        <a href="#" class="btn-buy">Buy Now</a>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
-                <div class="box">
-                    <h3>Developer</h3>
-                    <h4><sup>$</sup>29<span> / month</span></h4>
-                    <ul>
-                        <li>Aida dere</li>
-                        <li>Nec feugiat nisl</li>
-                        <li>Nulla at volutpat dola</li>
-                        <li>Pharetra massa</li>
-                        <li>Massa ultricies mi</li>
-                    </ul>
-                    <div class="btn-wrap">
-                        <a href="#" class="btn-buy">Buy Now</a>
-                    </div>
-                </div>
-            </div>
+    <div class="pricing">
+        <div class="container" id="pricing" data-aos="fade-up">
+            <div class="row" style="display: -ms-flexbox;
+                 display: flex;
+                 -ms-flex-wrap: wrap;
+                 flex-wrap: nowrap;
+                 margin-right: -15px;
+                 margin-left: -15px;
+                 flex-direction: row;
+                 align-content: stretch;
+                 justify-content: space-between;">
+                <c:forEach items="${CURRENT_SUBJECT.packages}" var="packages">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="box">
+                            <h3>${packages.name}</h3>
+                            <c:if test="${packages.accessduration gt 0}" >
+                                <c:set var="type" value="${packages.accessduration} month"></c:set>
+                            </c:if>
+                            <c:if test="${packages.accessduration eq 0}" >
+                                <c:set var="type" value="unlimited"></c:set>
+                                    <span class="advanced">Advanced</span>
+                            </c:if>
 
-            <div class="col-lg-3 col-md-6 mt-4 mt-lg-0">
-                <div class="box">
-                    <span class="advanced">Advanced</span>
-                    <h3>Ultimate</h3>
-                    <h4><sup>$</sup>49<span> / month</span></h4>
-                    <ul>
-                        <li>Aida dere</li>
-                        <li>Nec feugiat nisl</li>
-                        <li>Nulla at volutpat dola</li>
-                        <li>Pharetra massa</li>
-                        <li>Massa ultricies mi</li>
-                    </ul>
-                    <div class="btn-wrap">
-                        <a href="#" class="btn-buy">Buy Now</a>
+                            <h4>
+                                <sup>$</sup>${packages.salePrice}
+
+                                <span> / ${type}</span>
+                            </h4>
+                            <ul style="min-height: 200px">
+                                <li class="na">${packages.listPrice}$</li>
+                                <li>${packages.description}</li>
+                            </ul>
+                            <div class="btn-wrap">
+
+                                <a href="AddNewRegistration?txtSubjectID=${CURRENT_SUBJECT.subjectID}&txtPackageID=${packages.packageID}" class="btn-buy">Buy Now</a>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </c:forEach>
             </div>
         </div>
     </div>
-</div>
+</c:if>
 <!-- End Pricing Section -->
 
 <main id="main">
@@ -151,12 +123,23 @@
                         <p>${CURRENT_SUBJECT.numOfLessons}</p>
                     </div>
                     <div class="course-info d-flex align-items-center">
-                        <input
-                            type="button"
-                            class="btn btn-primary btn-block"
-                            id="enrollBtn"
-                            value="Enroll now"
-                            />
+                        <c:if test="${OWNCOURSE eq false}">
+
+                            <input
+                                type="button"
+                                class="btn btn-primary btn-block"
+                                id="enrollBtn"
+                                value="Enroll now"/>
+                        </c:if>
+
+                        <c:if test="${OWNCOURSE eq true}">
+
+                            <a href="StartLearning?txtSubjectID=${CURRENT_SUBJECT.subjectID}"
+                               type="button"
+                               class="btn btn-primary btn-block"
+
+                               value="Study now">Study now</a>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -172,7 +155,7 @@
                 <p>Total length: 10 hours</p>
                 <div class="menu">
                     <ul>
-                        
+
                         <c:forEach items="${TOPIC_LIST}" var="tpList">
                             <li class="item" id="chapterI">
                                 <a href="#chapterI" class="btn"> ${tpList.name} </a>
@@ -210,10 +193,8 @@
                     </div>
                     <div class="ti-text">
                         <h6>
-                            <a href="#"
-                               >A Monster Prom poster got hijacked for a Papa Roach
-                                concert...</a
-                            >
+                            <a href="#">A Monster Prom poster got hijacked for a Papa Roach
+                                concert...</a>
                         </h6>
                         <ul>
                             <li><i class="far fa-clock"></i> Aug 01, 2019</li>

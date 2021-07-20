@@ -40,7 +40,7 @@ public class UserProfileDAO implements Serializable {
         try {
             con = DBHelpers.makeConnection();
             if (con != null) {
-                String sql = "SELECT Email, Avatar, Gender, Mobile, Address ,CreateDate "
+                String sql = "SELECT Email, Avatar, Gender, Mobile, Address "
                         + "FROM UserProfile ";
                 stm = con.prepareStatement(sql);
                 rs = stm.executeQuery();
@@ -107,7 +107,7 @@ public class UserProfileDAO implements Serializable {
         return false;
     }
 
-    public UserProfileDTO getUserEmail(String email) throws SQLException, NamingException {
+    public UserProfileDTO getUserProfileByEmail(String email) throws SQLException, NamingException {
         Connection con = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
@@ -115,7 +115,7 @@ public class UserProfileDAO implements Serializable {
         try {
             con = DBHelpers.makeConnection();
             if (con != null) {
-                String sql = "SELECT Email, Avatar, Gender, Mobile, Address ,CreateDate "
+                String sql = "SELECT Email, Avatar, Gender, Mobile, Address  "
                         + "FROM UserProfile "
                         + "WHERE Email = ? ";
                 stm = con.prepareStatement(sql);

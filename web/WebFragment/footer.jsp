@@ -85,8 +85,7 @@
 
 <!-- Footer Bottom End -->
 
-<!-- Back to Top -->
-<a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+
 
 <!-- JavaScript Libraries -->
 <!-- JS -->
@@ -178,5 +177,20 @@
 <script src="assets/js/studentAlsoEnroll.js"></script>
 <!-- Content middle show up script -->
 <script src="assets/js/contentShowUp.js"></script>
+<!-- collapsed panel js -->
+<script src="assets/js/collapsedPanel.sass"></script>
+<!-- Filter scripte js -->
+<script src="assets/js/filterCourse.js"></script>
+<!-- Popover script js -->
+<script src="assets/js/coursePopover.js"></script>
+<!-- Accordian -->
+<script src="assets/js/accordion.js"></script>
+<!-- Filter toggle js -->
+<script src="assets/js/togglePanelAccordion.js"></script>
+<!-- Avatar uploader js -->
+<script src="assets/js/avatarUploader.js"></script>
+<!-- Search course paginatino js -->
+<script src="//raw.github.com/botmonster/jquery-bootpag/master/lib/jquery.bootpag.min.js"></script>
+
 </body>
 </html>

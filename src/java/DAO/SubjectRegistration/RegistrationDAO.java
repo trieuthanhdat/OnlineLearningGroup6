@@ -3,6 +3,7 @@ package DAO.SubjectRegistration;
 import DTO.SubjectRegistration.RegistrationDTO;
 import utils.DBHelpers;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -54,7 +55,7 @@ public class RegistrationDAO implements Serializable{
         try {
             con = DBHelpers.makeConnection();
             if (con != null) {
-                String sql = "SELECT RegistrationID, SubjectID, UserID, RegistrationTime, "
+                String sql = "SELECT RegistrationID, SubjectID, Email, RegistrationTime, "
                                   + "TotalCost, ValidFrom, ValidTo, PackageID, Status "
                            + "FROM Registration";
                 
@@ -64,7 +65,7 @@ public class RegistrationDAO implements Serializable{
                 while(rs.next()) {
                     int registrationID = rs.getInt("RegistrationID");
                     int subjectID = rs.getInt("SubjectID");
-                    String userID = rs.getString("UserID");
+                    String email = rs.getString("Email");
                     Date registrationTime = rs.getDate("RegistrationTime");
                     int totalCost = rs.getInt("TotalCost");
                     Date validFrom = rs.getDate("ValidFrom");
@@ -72,22 +73,31 @@ public class RegistrationDAO implements Serializable{
                     int packageID = rs.getInt("PackageID");
                     boolean status = rs.getBoolean("Status");
                     
-                    registrationsList.add(new RegistrationDTO(registrationID, subjectID, userID, registrationTime, totalCost, validFrom, validTo, packageID, status));
+                    registrationsList.add(new RegistrationDTO(registrationID, subjectID, email, registrationTime, totalCost, validFrom, validTo, packageID, status));
                 }
             }
         } finally {
             closeConnection();
         }
     }
-    
+      public boolean checkOwnCourse(String Email, int subjectID) {
+        for (RegistrationDTO reg : registrationsList) {
+            if (reg.getEmail().equals(Email) && reg.getSubjectID() == subjectID) {
+                if (reg.isStatus() == true) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     private void validateAllRegistrations() 
             throws NamingException, SQLException {
         try {
             Date currDate = new Date(Instant.now().toEpochMilli());
 
             for (RegistrationDTO reg : registrationsList) {
-                if (currDate.compareTo(reg.getValidFrom()) >= 0 &&
-                    currDate.compareTo(reg.getValidTo()) <= 0) {
+                if (currDate.compareTo(reg.getValidFrom()) > 0 &&
+                    currDate.compareTo(reg.getValidTo()) < 0) {
                     // status is supposed to be true but is false in database
                     if (!reg.isStatus()) { 
                         changeRegistrationStatus(reg.getRegistrationID(), reg.isStatus());
@@ -104,11 +114,11 @@ public class RegistrationDAO implements Serializable{
         } finally { }
     }
     
-    public List<RegistrationDTO> getUserRegistrations(String currUserID) {
+    public List<RegistrationDTO> getUserRegistrations(String currUserEmail) {
         
         List<RegistrationDTO> resultList = new ArrayList<>();
         for (RegistrationDTO regis : registrationsList) {
-            if (regis.getUserID().equals(currUserID)) {
+            if (regis.getEmail().equals(currUserEmail)) {
                 resultList.add(regis);
             }
         }
@@ -116,10 +126,10 @@ public class RegistrationDAO implements Serializable{
         
     }
     
-    public boolean checkRegistration(String currUserID, int subjectID) {        
+    public boolean checkRegistration(String currUserEmail, int subjectID) {        
         boolean checkResult = false;
         for (RegistrationDTO regItem : registrationsList) {
-            if (regItem.getSubjectID() == subjectID && regItem.getUserID().equals(currUserID) && regItem.isStatus()) {
+            if (regItem.getSubjectID() == subjectID && regItem.getEmail().equals(currUserEmail) && regItem.isStatus()) {
                 checkResult = true;
             }
         }
@@ -145,4 +155,34 @@ public class RegistrationDAO implements Serializable{
         }
     }
     
+    public boolean addNewRegistration(RegistrationDTO reg) 
+            throws NamingException, SQLException{
+        try{
+           con = DBHelpers.makeConnection();
+           if(con!=null){
+               String sql = "INSERT INTO "
+                       + "Registration(Email, SubjectID, PackageID, ValidFrom, ValidTo, "
+                       + "TotalCost, RegistrationTime, Status) "
+                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+               stm= con.prepareStatement(sql);
+               stm.setString(1, reg.getEmail());
+               stm.setInt(2, reg.getSubjectID());
+               stm.setInt(3, reg.getPackageID());
+               stm.setDate(4, reg.getValidFrom());
+               stm.setDate(5, reg.getValidTo());               
+               BigDecimal totalCost = BigDecimal.valueOf(Double.valueOf(String.valueOf(reg.getTotalCost())));               
+               stm.setBigDecimal(6, totalCost);
+               stm.setDate(7, reg.getRegistrationTime());               
+               stm.setBoolean(8, reg.isStatus());
+               
+               int rowEffect = stm.executeUpdate();
+               if (rowEffect > 0) {
+                   return true;
+               }
+           }
+        }finally{
+            closeConnection();
+        }
+        return false;
+    }
 }

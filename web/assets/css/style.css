@@ -1302,3 +1302,11 @@ button#Switcher__control {
   font-size: 25px;
   color: #fff;
 }
+.mycourse.container-fluid{
+    max-width: 100%;
+}
+
+
+.popover{
+    max-width: 470px!important;
+}

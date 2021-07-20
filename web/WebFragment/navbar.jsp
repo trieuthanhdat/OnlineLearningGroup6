@@ -1,4 +1,5 @@
 <!-- Nav Bar Start -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div
     class="nav-bar navbar-expand-lg navbar-dark bg-dark" id="top-navbar"
     style="padding: 0px 10%"
@@ -88,18 +89,23 @@
                     </form>
                 </div>
                 <div class="social ml-auto">
-                    <div class="dropdownbox">
-                        <img
-                            src="assets/img/Avatar/userAvatar.jpg"
-                            class="avatar dropdown-toggle"
-                            />
-                        <div class="dropdown-content">
-                            <a href="#" class="list-item" id="sign-in">Login</a>
-                            <a href="#" class="list-item">Profile</a>
-                            <a href="MyCourse" class="list-item">My Courses</a>
-                            <a href="Logout" class="list-item">Log out</a>
+                    <c:if  test="${empty CURRENT_USER}">
+                        <button class="btn" id="sign-in">Join now</button>
+                    </c:if>
+                    <c:if test="${not empty CURRENT_USER}">
+                        <div class="dropdownbox">
+                            <img
+                                src="assets/img/Avatar/userAvatar.jpg"
+                                class="avatar dropdown-toggle"
+                                />
+                            <div class="dropdown-content">
+                              
+                                <a href="Profile" class="list-item">Profile</a>
+                                <a href="MyCourse" class="list-item">My Courses</a>
+                                <a href="Logout" class="list-item">Log out</a>
+                            </div>
                         </div>
-                    </div>
+                    </c:if>
                 </div>
             </div>
         </nav>

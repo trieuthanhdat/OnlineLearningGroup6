@@ -52,8 +52,6 @@ private final String UPDATE_USER_PROFILE="updateUserProfile.jsp";
         String address = request.getParameter("txtAddress");
         String email = request.getParameter("txtEmail"); 
         try  {     
-            
-            
             UserProfileDAO dao = new UserProfileDAO();
             boolean result = dao.updateUserProfile(email,avatar, gender, phone, address);
             if(result){

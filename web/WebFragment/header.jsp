@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -108,16 +109,19 @@
         <link rel="stylesheet" href="assets/css/dropdownContent.css" />
         <!-- CourseSlides.css -->
         <link rel="stylesheet" href="assets/css/CourseSlides.css" />
-        <!-- w3school.css -->
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
         <!-- SearchCourse css -->
         <link rel="stylesheet" href="assets/css/SearchCourse.css" />
-
-
+        <!-- Profile page css -->
+        <link rel="stylesheet" href="assets/css/ProfilePage.css" />
+        <!-- Accordion style -->
+        <link rel="stylesheet" href="assets/css/Accordion.css" />
         <!--Course Main CSS File -->
         <link href="assets/css/CourseStyle.css" rel="stylesheet" />
         <!-- Course Detail css -->
         <link rel="stylesheet" href="assets/css/courseDetailStyle.css">
+        <!-- w3school.css -->
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+
         <!-- Vendor CSS Files -->
         <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet" />
         <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
@@ -165,6 +169,12 @@
         <!-- Template Stylesheet -->
         <link href="assets/css/templateStyle.css" rel="stylesheet" />
         <link href="assets/css/slideStyle.css" rel="stylesheet" />
+
+        <link
+            href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+            type="text/css"
+            rel="stylesheet"
+            />
     </head>
 
     <body>

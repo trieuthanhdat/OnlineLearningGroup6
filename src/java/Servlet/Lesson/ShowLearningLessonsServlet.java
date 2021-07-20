@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Servlet.Lesson;
 
 import DAO.Lesson.LessonDAO;
@@ -11,6 +6,7 @@ import DTO.Lesson.LessonDTO;
 import DTO.User.UserDTO;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.naming.NamingException;
 import javax.servlet.RequestDispatcher;
@@ -28,7 +24,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "ShowLearningLessonsServlet", urlPatterns = {"/ShowLearningLessonsServlet"})
 public class ShowLearningLessonsServlet extends HttpServlet {
 
-    private final String ERROR_PAGE = "error.html";
+    private final String ERROR_PAGE = "ErrorPage";
     private final String SHOW_CURRENT_LESSON_DETAILS = "ShowCurrentLessonServlet";
     
     /**
@@ -53,18 +49,32 @@ public class ShowLearningLessonsServlet extends HttpServlet {
                 int subID = Integer.parseInt(request.getParameter("txtSubjectID"));
                 log("SubjectID: " + subID);
                 
-                if (currUser != null) {
-                    String currUserID = currUser.getUserID();
+                if (currUser != null) {                    
                     RegistrationDAO regDAO = new RegistrationDAO();
                     
                     //check if the subject is still enabled
-                    boolean result = regDAO.checkRegistration(currUserID, subID);
+                    boolean result = regDAO.checkRegistration(currUser.getEmail(), subID);
                     log("Check registration result: " + result);
                     if (result) {
                         LessonDAO lessonDAO = new LessonDAO();
-                        List<LessonDTO> lessonsList = lessonDAO.getCurrLessons(subID);
+                        List<LessonDTO> lessonsByOrder = lessonDAO.getCurrLessons(subID);
                         
-                        request.setAttribute("CURRENT_LESSONS", lessonsList);
+                        List<LessonDTO> topics = new ArrayList<>();
+                        for (LessonDTO ls : lessonsByOrder) {
+                            if (ls.getTopicID() == 0) {
+                                topics.add(ls);
+                            }
+                        }
+                        
+                        List<LessonDTO> lessons = new ArrayList<>();
+                        for (LessonDTO ls : lessonsByOrder) {
+                            if (ls.getTopicID() != 0) {
+                                lessons.add(ls);
+                            }
+                        }
+                        
+                        request.setAttribute("TOPICS_LIST", topics);
+                        request.setAttribute("LESSONS_LIST", lessons);
                         url = SHOW_CURRENT_LESSON_DETAILS;
                     }
                 }
@@ -72,8 +82,12 @@ public class ShowLearningLessonsServlet extends HttpServlet {
         } catch (NamingException | SQLException ex) {
             log(ex.getMessage());
         } finally {
-            RequestDispatcher rd = request.getRequestDispatcher(url);
-            rd.forward(request, response);
+            if (url.equals(ERROR_PAGE)) {
+                response.sendRedirect(url);
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher(url);
+                rd.forward(request, response);
+            }
         }
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

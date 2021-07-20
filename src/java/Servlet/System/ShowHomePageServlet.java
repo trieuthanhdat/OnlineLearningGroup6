@@ -35,7 +35,7 @@ public class ShowHomePageServlet extends HttpServlet {
 
     private final String WELCOME_PAGE = "WelcomePage";
     private final String HOME_PAGE = "HomePage.jsp";
-    private final String DASHBOARD_PAGE = "";
+    private final String DASHBOARD_PAGE = "Dashboard";
     private final String ERROR_PAGE = "ErrorPage";
 
     /**
@@ -57,11 +57,12 @@ public class ShowHomePageServlet extends HttpServlet {
         if (session != null) {
             UserDTO currUser = (UserDTO) session.getAttribute("CURRENT_USER");
             if (currUser != null) {
-                if (currUser.getRole().equals("User")) {
+                if (currUser.getRole().toLowerCase().equals("user")) {
                     // slides, posts, courses
                     url = HOME_PAGE;
                 } else {
-                    // to Dashboard
+                    
+                    url = DASHBOARD_PAGE;
                 }
             }
 
@@ -93,10 +94,10 @@ public class ShowHomePageServlet extends HttpServlet {
                         myCourses.add(sub);
                         log(sub.getTitle());
                     }
-                
+
                 }
                 request.setAttribute("MYSUBJECT_LIST", myCourses);
-                
+
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

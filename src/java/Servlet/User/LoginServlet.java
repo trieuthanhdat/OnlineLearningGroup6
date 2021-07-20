@@ -5,9 +5,10 @@
  */
 package Servlet.User;
 
-
 import Temp.UsersDAO;
 import DTO.User.UserDTO;
+import DTO.User.UserProfileDTO;
+import Temp.UserProfileDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.naming.NamingException;
@@ -45,13 +46,17 @@ public class LoginServlet extends HttpServlet {
         try {
             String email = request.getParameter("txtEmail");
             String password = request.getParameter("txtPassword");
-            log("LoginServlet: " + email + " - " + password);            
+            log("LoginServlet: " + email + " - " + password);
             UsersDAO dao = new UsersDAO();
-            UserDTO result = dao.checkLogin(email, password);            
+            UserProfileDAO profileDao = new UserProfileDAO();
+            UserDTO result = dao.checkLogin(email, password);
             if (result != null) {
-                url = LOGGED_IN_PAGE;                
+                UserProfileDTO profile = profileDao.getUserProfileByEmail(result.getEmail());
+                log(profile.getAvartar());
+                url = LOGGED_IN_PAGE;
                 HttpSession session = request.getSession();
                 session.setAttribute("CURRENT_USER", result);
+                session.setAttribute("CURRENT_PROFILE", profile);
                 log(result.getPassword());
             }
             log(url);

@@ -3,8 +3,10 @@ package Servlet.Subject;
 import DAO.Lesson.LessonDAO;
 import DAO.Subject.SubjectDAO;
 import DAO.SubjectRegistration.PackageDAO;
+import DAO.SubjectRegistration.RegistrationDAO;
 import DTO.Lesson.LessonDTO;
 import DTO.Subject.SubjectDTO;
+import DTO.User.UserDTO;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,8 +45,11 @@ public class ShowCourseDetailsServlet extends HttpServlet {
         String url = WELCOME_PAGE;
 
         try {
+            HttpSession session = request.getSession(true);
+            UserDTO currUser = (UserDTO) session.getAttribute("CURRENT_USER");
             int subID = Integer.parseInt(request.getParameter("txtSubjectID"));
             SubjectDAO subDAO = new SubjectDAO();
+
             SubjectDTO currSub = subDAO.getSubjectByID(subID);
             if (currSub != null) {
                 currSub.setDetails(subDAO.getSubjectDetailsByID(subID));
@@ -59,18 +65,25 @@ public class ShowCourseDetailsServlet extends HttpServlet {
                 List<LessonDTO> subLessonList = new ArrayList<>();
                 for (LessonDTO lessonDTO : lessonList) {
                     if (lessonDTO.getTopicID() == 0) {
+
                         topicList.add(lessonDTO);
                         log(String.valueOf(lessonDTO.getLessonID()));
-                    }else{
+                    } else {
                         subLessonList.add(lessonDTO);
                         log(String.valueOf(lessonDTO.getLessonID()));
                     }
-                    
+
                 }
-                
+                RegistrationDAO resDAO = new RegistrationDAO();
                 request.setAttribute("TOPIC_LIST", topicList);
                 request.setAttribute("SUBLESSON_LIST", subLessonList);
                 request.setAttribute("CURRENT_SUBJECT", currSub);
+                
+                if(currUser!=null){
+                    request.setAttribute("OWNCOURSE", resDAO.checkOwnCourse(currUser.getEmail(), subID));
+                }else{
+                    request.setAttribute("OWNCOURSE", false);
+                }
                 url = COURSE_DETAILS_PAGE;
             } else {
                 url = ERROR_PAGE;

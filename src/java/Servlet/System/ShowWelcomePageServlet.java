@@ -26,7 +26,7 @@ public class ShowWelcomePageServlet extends HttpServlet {
 
     private final String WELCOME_PAGE = "WelcomePage.jsp";
     private final String HOME_PAGE = "HomePage";
-    private final String DASHBOARD_PAGE = "";
+    private final String DASHBOARD_PAGE = "Dashboard";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,7 +50,7 @@ public class ShowWelcomePageServlet extends HttpServlet {
                 if (currUser.getRole().equals("User")) {
                     url = HOME_PAGE;
                 } else {
-                    // to Dashboard Page
+                    url = DASHBOARD_PAGE;
                 }
             }
 

@@ -10,9 +10,9 @@ import java.sql.Date;
 public class RegistrationDTO implements Serializable{
     private int registrationID;
     private int subjectID;
-    private String userID;
+    private String email;
     private Date registrationTime;
-    private int totalCost;
+    private float totalCost;
     private Date validFrom;
     private Date validTo;
     private int packageID;
@@ -21,10 +21,10 @@ public class RegistrationDTO implements Serializable{
     public RegistrationDTO() {
     }
 
-    public RegistrationDTO(int registrationID, int subjectID, String userID, Date registrationTime, int totalCost, Date validFrom, Date validTo, int packageID, boolean status) {
+    public RegistrationDTO(int registrationID, int subjectID, String email, Date registrationTime, float totalCost, Date validFrom, Date validTo, int packageID, boolean status) {
         this.registrationID = registrationID;
         this.subjectID = subjectID;
-        this.userID = userID;
+        this.email = email;
         this.registrationTime = registrationTime;
         this.totalCost = totalCost;
         this.validFrom = validFrom;
@@ -64,15 +64,15 @@ public class RegistrationDTO implements Serializable{
     /**
      * @return the userID
      */
-    public String getUserID() {
-        return userID;
+    public String getEmail() {
+        return email;
     }
 
     /**
      * @param userID the userID to set
      */
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setEmail(String userID) {
+        this.email = userID;
     }
 
     /**
@@ -93,14 +93,14 @@ public class RegistrationDTO implements Serializable{
     /**
      * @return the totalCost
      */
-    public int getTotalCost() {
+    public float getTotalCost() {
         return totalCost;
     }
 
     /**
      * @param totalCost the totalCost to set
      */
-    public void setTotalCost(int totalCost) {
+    public void setTotalCost(float totalCost) {
         this.totalCost = totalCost;
     }
 
