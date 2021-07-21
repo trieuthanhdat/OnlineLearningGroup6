@@ -122,10 +122,10 @@ table.table .avatar {
 	color: #666;
 }	
 .pagination li.active a, .pagination li.active a.page-link {
-	    background: #ff6f61;
+	background: #03A9F4;
 }
 .pagination li.active a:hover {        
-	    background: #ff6f61;
+	background: #0397d6;
 }
 .pagination li.disabled i {
 	color: #ccc;

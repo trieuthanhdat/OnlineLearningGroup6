@@ -515,7 +515,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="sign-up.html">
+                <a class="nav-link" href="Logout">
                     <div
                         class="
                         icon icon-shape icon-sm
@@ -587,7 +587,7 @@
                             </g>
                         </svg>
                     </div>
-                    <span class="nav-link-text ms-1">Sign Up</span>
+                    <span class="nav-link-text ms-1">Sign out</span>
                 </a>
             </li>
         </ul>

@@ -57,17 +57,3 @@
 .tab-custon-menu-bg-style ul.main-menu-dropdown li a:hover{
 	color:#fff;
 }
-.dataTables_wrapper .dataTables_paginate .paginate_button {
-    box-sizing: border-box;
-    display: inline-block;
-    min-width: 1.5em;
-    margin-left: 2px;
-    padding:0px!important;
-    text-align: center;
-    text-decoration: none !important;
-    cursor: pointer;
-    *cursor: hand;
-    color: #333 !important;
-    border: 1px solid transparent;
-    border-radius: 2px;
-}

@@ -4,7 +4,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<c:if test="${empty LOGIN_ERROR}">
+<c:if test="${not empty LOGIN_ERROR}">
     <script>
         window.onload = function () {
             var button = document.getElementById("sign-in");
@@ -44,8 +44,7 @@
                 <div class="col-lg-7 col-md-9 col-12">
                     <div class="hire-us-content">
                         <h6>
-                            We?ve completed more than <span>100+</span> project for our
-                            amazing clients, If you interested?
+                         We are a team of Promising people with <span>100+</span> percent of strenght?
                         </h6>
                     </div>
                 </div>
