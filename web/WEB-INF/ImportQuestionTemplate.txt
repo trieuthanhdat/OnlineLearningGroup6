@@ -1,0 +1,8 @@
+Question1:
+- Content: 1 + 1 = 2. The statement is true or false?
+- MediaLink: (can be empty)
+- LessonID: 2
+- Level: Medium
+- Options: A/ True ~ B/ False ~ C\ Null
+- Explanation: Basic arithmetic.
+#####################################################
